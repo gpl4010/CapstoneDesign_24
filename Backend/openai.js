@@ -9,7 +9,7 @@ const cors = require('cors');
 app.use(cors());
 
 const openai = new OpenAI({
-  apiKey: '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'
+  apiKey: 'Key'
 });
 
 //POST 요청 받을 수 있게 만듬
