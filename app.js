@@ -1,5 +1,5 @@
 const  express = require('express')
-const mysql = require(mysql2)
+//const mysql = require(mysql2)
 const path=require('path')
 const app = express();
 app.use(express.static(path.join(__dirname,"html")));
@@ -8,22 +8,22 @@ app.listen(8082,function(){
     console.log('listening on 8082')
 });
 
-// MySQL 설정
-const db = mysql.createConnection({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || 'example',
-    database: process.env.DB_NAME || 'mydatabase'
-});
+// // MySQL 설정
+// const db = mysql.createConnection({
+//     host: process.env.DB_HOST || 'localhost',
+//     user: process.env.DB_USER || 'root',
+//     password: process.env.DB_PASSWORD || 'example',
+//     database: process.env.DB_NAME || 'mydatabase'
+// });
 
-// MySQL 연결
-db.connect((err) => {
-    if (err) {
-        console.error('Error connecting to MySQL:', err);
-        return;
-    }
-    console.log('Connected to MySQL');
-});
+// // MySQL 연결
+// db.connect((err) => {
+//     if (err) {
+//         console.error('Error connecting to MySQL:', err);
+//         return;
+//     }
+//     console.log('Connected to MySQL');
+// });
 
 // get 명령어
 // 누군가가 '/'주소를 요청하면 /.html 화면을 띄워주자
