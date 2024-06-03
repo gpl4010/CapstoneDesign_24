@@ -40,12 +40,13 @@ async function sendMessage() {
             throw new Error('Request failed with status ' + response.status);
         }
         console.log('im working!!');
-        console.log(response);
         const data = await response.json();
+        console.log('im working!!');
+        //!!여기서 부터 오류 엄청남
         console.log('Response:', data);
+        
         //로딩 아이콘 숨기기
         document.getElementById('loader').style.display = "none";
-        console.log('im working!!');
         //Push
         assistantMessages.push(data.assistant);
         
