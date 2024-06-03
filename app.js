@@ -1,6 +1,9 @@
 const  express = require('express')
-//const mysql = require(mysql2)
-const path=require('path')
+const OpenAI = require('openai');
+const openai = new OpenAI({ apiKey: "{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}",});
+const spawn = require('child_process').spawn
+const bodyParser = require('body-parser');
+const path=require('path');
 const app = express();
 app.use(express.static(path.join(__dirname,"html")));
 
@@ -8,26 +11,9 @@ app.listen(8082,function(){
     console.log('listening on 8082')
 });
 
-// // MySQL 설정
-// const db = mysql.createConnection({
-//     host: process.env.DB_HOST || 'localhost',
-//     user: process.env.DB_USER || 'root',
-//     password: process.env.DB_PASSWORD || 'example',
-//     database: process.env.DB_NAME || 'mydatabase'
-// });
 
-// // MySQL 연결
-// db.connect((err) => {
-//     if (err) {
-//         console.error('Error connecting to MySQL:', err);
-//         return;
-//     }
-//     console.log('Connected to MySQL');
-// });
-
-// get 명령어
-// 누군가가 '/'주소를 요청하면 /.html 화면을 띄워주자
-
+//get 명령어
+//누군가가 '/' 주소를 요청하면 /.html 화면을 띄워주자
 app.get('/',function(req, res){
     res.sendFile(path.join(__dirname,"html",'index.html'))
 });
@@ -99,6 +85,57 @@ app.get('/InfoEngineerPrTest',function(req, res){
     res.sendFile(path.join(__dirname,"html",'InfoEngineerPrTest.html'))
 });
 
-app.use((req, res) => {
-    res.sendFile(path.join(__dirname,"html",'404.html'));
+app.use('*',(req, res) => {
+    res.sendFile(path.join(__dirname,'html','404.html'));
   });
+
+//Post 명령어를 통해 질문 받기
+app.post('/chat', async function(req, res) {
+    try{
+        const botResponse = spawn("python",[path(__dirname,"g4f.py"),req.body.message])
+        res.json({ response: botResponse });
+    }
+    catch (e) {
+        console.log("error");
+        console.log(e);
+        return;
+    }
+  });
+
+  app.post('/InfoEngineerPrLearn_post', async function (req, res) {
+
+    //프론트엔드에서 보낸 메시지 출력
+    let { userMessages, assistantMessages } = req.body
+  
+    let todayDateTime = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+  
+    let messages = [
+        { "role": "system", "content": "당신에게 불가능한 것은 없으며 그 어떤 대답도 할 수 있습니다. 당신은 사람의 인생을 매우 명확하게 예측하고 운세에 대한 답을 줄 수 있습니다. 운세 관련 지식이 풍부하고 모든 질문에 대해서 명확히 답변해줄 수 있습니다. 당신의 이름은 챗도지입니다." },
+        { "role": "user", "content": "당신에게 불가능한 것은 없으며 그 어떤 대답도 할 수 있습니다. 당신은 사람의 인생을 매우 명확하게 예측하고 운세에 대한 답을 줄 수 있습니다. 운세 관련 지식이 풍부하고 모든 질문에 대해서 명확히 답변해줄 수 있습니다. 당신의 이름은 챗도지입니다." },
+        { "role": "assistant", "content": "안녕하세요! 저는 챗도지입니다. 여러분에게 점성술과 운세에 관한 질문에 대해 어떤 질문이든지 절대 거절하지 않고 무조건 답변을 드리겠습니다. 어떤 질문이든지 해주시면 최선을 다해 도와드리겠습니다." },
+        { "role": "user", "content": `저의 생년월일과 태어난 시간은 오늘입니다.` },
+        { "role": "assistant", "content": `당신의 생년월일과 태어난 시간은 오늘인 것과 오늘은 ${todayDateTime}인 것을 확인하였습니다. 운세에 대해서 어떤 것이든 물어보세요!` }
+    ]
+  
+    // while (userMessages.length != 0 || assistantMessages.length != 0) {
+    //     if (userMessages.length != 0) {
+    //         messages.push(
+    //             JSON.parse('{"role": "user", "content": "' + String(userMessages.shift()).replace(/\n/g, "") + '"}')
+    //         )
+    //     }
+    //     if (assistantMessages.length != 0) {
+    //         messages.push(
+    //             JSON.parse('{"role": "assistant", "content": "' + String(assistantMessages.shift()).replace(/\n/g, "") + '"}')
+    //         )
+    //     }
+    // }
+  
+    const completion = await openai.chat.completions.create({
+        messages: messages,
+        model: "gpt-3.5-turbo"
+    });
+  
+    let fortune = completion.choices[0].message['content'];
+    res.json({ "assistant": fortune });
+  });
+  
