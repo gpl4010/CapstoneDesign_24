@@ -10,7 +10,7 @@ COPY package*.json ./
 # Install dependencies
 
 RUN npm install
-RUN sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8082
+#RUN sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8082
 
 # Copy the rest of the application code
 COPY . .
