@@ -25,7 +25,7 @@ async function sendMessage() {
 
     //백엔드 서버에 메시지를 보내고 응답 출력
     try {
-        const response = await fetch('/InfoEngineerPrLearn_post', {
+        const response = await fetch('/abc', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -39,10 +39,9 @@ async function sendMessage() {
         if (!response.ok) {
             throw new Error('Request failed with status ' + response.status);
         }
-        console.log('im working!!');
+        console.log("12")
+                //!!이부분 오류
         const data = await response.json();
-        console.log('im working!!');
-        //!!여기서 부터 오류 엄청남
         console.log('Response:', data);
         
         //로딩 아이콘 숨기기

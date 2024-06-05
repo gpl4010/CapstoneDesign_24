@@ -1,5 +1,5 @@
 cd C:\
-cd C:\project\CapstoneDesign_2024\Frontend
+cd C:\project\CapstoneDesign_2024\html
 ren "blank - 복사본 (2).html" InfoTechWrLearn.html
 ren "blank - 복사본 (3).html" InfoTechPrLearn.html
 ren "blank - 복사본 (4).html" InfoTechWrTest.html

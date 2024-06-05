@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
+    <title>내 손에 자격증</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -19,6 +19,9 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Chat box for GPT API -->
+    <link href="gptapi.css" rel="stylesheet">
 
 </head>
 
@@ -277,9 +280,17 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">내용 입력</h1>
+                    
+                    <div id="chat" class="chat-container">
+                        <div class="chat-bubble bot-bubble" id="fortuneResponse">
+                            <!-- The fortune response will appear here -->
+                        </div>
+                        <div id="loader" class="loader" style="display: none;">
+                            <i class="loading-icon fas fa-spinner fa-spin"></i>
+                        </div>
+                        <input type="text" class="chat-input" id="messageInput" placeholder="메시지를 입력하세요...">
+                        <button class="send-button" onclick="sendMessage()">보내기</button>
+                    </div>
 
                 </div>
                 <!-- /.container-fluid -->
@@ -337,6 +348,9 @@
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- GPT API Connecting -->
+    <script src="js/gptapi.js" async></script>
 
 </body>
 
