@@ -1,11 +1,13 @@
-const  express = require('express')
+const  express = require('express');
+require('dotenv').config();
 const OpenAI = require('openai');
-const openai = new OpenAI({ apiKey: MYAPIKEY,});
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY,});
 const spawn = require('child_process').spawn
 const bodyParser = require('body-parser');
 const path=require('path');
 const cors = require('cors');
 const app = express();
+
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname,"html")));
