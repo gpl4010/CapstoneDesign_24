@@ -1,6 +1,6 @@
 const  express = require('express')
 const OpenAI = require('openai');
-const openai = new OpenAI({ apiKey: "sk-proj-lddGmPGXxMA7myRoMbYRT3BlbkFJ2OgwsJWnEwUjgtVdFSDR",});
+const openai = new OpenAI({ apiKey: MYAPIKEY,});
 const spawn = require('child_process').spawn
 const bodyParser = require('body-parser');
 const path=require('path');
