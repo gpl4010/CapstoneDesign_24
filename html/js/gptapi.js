@@ -21,11 +21,9 @@ async function sendMessage() {
 
     //입력 필드 초기화
     messageInput.value = '';
-    console.log(userMessages)
 
-    //백엔드 서버에 메시지를 보내고 응답 출력
     try {
-        const response = await fetch('/abc', {
+        const response = await fetch('/asdf', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -36,11 +34,12 @@ async function sendMessage() {
             })
         });
         
+        
         if (!response.ok) {
             throw new Error('Request failed with status ' + response.status);
         }
-        console.log("12")
-                //!!이부분 오류
+        
+        //!!이부분 오류
         const data = await response.json();
         console.log('Response:', data);
         
@@ -54,6 +53,7 @@ async function sendMessage() {
         const botBubble = document.createElement('div');
         botBubble.className = 'chat-bubble bot-bubble';
         botBubble.textContent = data.assistant;
+        document.getElementById('fortuneResponse').appendChild(botBubble);
 
     } catch (error) {
         console.error('Error:', error);

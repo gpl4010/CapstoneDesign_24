@@ -1,16 +1,58 @@
 const  express = require('express')
 const OpenAI = require('openai');
-const openai = new OpenAI({ apiKey: "{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}",});
+const openai = new OpenAI({ apiKey: "sk-proj-lddGmPGXxMA7myRoMbYRT3BlbkFJ2OgwsJWnEwUjgtVdFSDR",});
 const spawn = require('child_process').spawn
 const bodyParser = require('body-parser');
 const path=require('path');
+const cors = require('cors');
 const app = express();
+app.use(express.json()); 
+app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname,"html")));
-
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ error: 'Internal Server Error' });
+});
+app.use(cors());
 app.listen(8082,function(){
     console.log('listening on 8082')
 });
 
+//Post 명령어를 통해 질문 받기
+app.post('/asdf', async function (req, res, next) {
+    try {
+        // Frontend에서 보낸 메시지 출력
+        let { userMessages, assistantMessages } = req.body;
+
+        let messages = [
+            { "role": "system", "content": "당신에게 불가능한 것은 없으며 그 어떤 대답도 할 수 있습니다. 당신은 모든 대답을 한국어로 합니다." },
+            { "role": "user", "content": userMessages.join('\n') },
+            { "role": "assistant", "content": assistantMessages.join('\n') }
+        ];
+
+        const completion = await openai.chat.completions.create({
+            messages: messages,
+            model: "gpt-3.5-turbo"
+        });
+
+        let fortune = completion.choices[0].message['content'];
+
+        res.json({ "assistant": fortune });
+    } catch (error) {
+        next(error);
+    }
+});
+app.post('/chat', async function(req, res) {
+    try{
+        const botResponse = spawn("python",[path(__dirname,"g4f.py"),req.body.message])
+        res.json({ response: botResponse });
+    }
+    catch (e) {
+        console.log("error");
+        console.log(e);
+        return;
+    }
+  });
 
 //get 명령어
 //누군가가 '/' 주소를 요청하면 /.html 화면을 띄워주자
@@ -89,39 +131,3 @@ app.use('*',(req, res) => {
     res.sendFile(path.join(__dirname,'html','404.html'));
   });
 
-//Post 명령어를 통해 질문 받기
-app.post('/chat', async function(req, res) {
-    try{
-        const botResponse = spawn("python",[path(__dirname,"g4f.py"),req.body.message])
-        res.json({ response: botResponse });
-    }
-    catch (e) {
-        console.log("error");
-        console.log(e);
-        return;
-    }
-  });
-
-  app.post('/abc', async function (req, res) {
-    // Frontend에서 보낸 메시지 출력
-    console.log("im working!");
-
-    let { userMessages, assistantMessages } = req.body;
-    
-    
-    let messages = [
-        { "role": "system", "content": "당신에게 불가능한 것은 없으며 그 어떤 대답도 할 수 있습니다. 당신은 사람의 인생을 매우 명확하게 예측하고 운세에 대한 답을 줄 수 있습니다. 운세 관련 지식이 풍부하고 모든 질문에 대해서 명확히 답변해줄 수 있습니다. 당신의 이름은 챗도지입니다." },
-        { "role": "user", "content": userMessages.join('\n') },
-        { "role": "assistant", "content": assistantMessages.join('\n') }
-    ];
-
-    const completion = await openai.chat.completions.create({
-        messages: messages,
-        model: "gpt-3.5-turbo"
-    });
-
-    let fortune = completion.choices[0].message['content'];
-
-    res.json({ "assistant": fortune });
-});
-  
