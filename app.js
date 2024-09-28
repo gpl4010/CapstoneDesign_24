@@ -43,6 +43,90 @@ async function handleCertificateQuery(systemContent, userMessages, assistantMess
     return completion.choices[0].message['content'];
 }
 
+//정보처리기능사 문제생성
+app.get('/tech/question', async (req, res) => {
+    try {
+        console.log('Generating question...');
+        const systemContent = "당신은 정보처리기능사 시험 문제를 출제하는 출제자입니다. 객관식 문제 하나와 4개의 선택지, 그리고 정답을 생성해주세요. 형식: '문제: [문제 내용]\na) [선택지1]\nb) [선택지2]\nc) [선택지3]\nd) [선택지4]\n정답: [정답 알파벳]'";
+        const response = await openai.chat.completions.create({
+            messages: [{ role: "system", content: systemContent }],
+            model: "gpt-3.5-turbo"
+        });
+
+        console.log('GPT response:', response);
+
+        const content = response.choices[0].message.content;
+        console.log('Raw content:', content);
+
+        const parsedContent = parseQuestion(content);
+        console.log('Parsed content:', parsedContent);
+
+        res.json(parsedContent);
+    } catch (error) {
+        console.error('Error in /tech/question:', error);
+        res.status(500).json({ error: error.message || 'Internal Server Error' });
+    }
+});
+
+//정보처리산업기사 문제생성
+app.get('/ieng/question', async (req, res) => {
+    try {
+        console.log('Generating question...');
+        const systemContent = "당신은 정보처리산업기사 시험 문제를 출제하는 출제자입니다. 객관식 문제 하나와 4개의 선택지, 그리고 정답을 생성해주세요. 형식: '문제: [문제 내용]\na) [선택지1]\nb) [선택지2]\nc) [선택지3]\nd) [선택지4]\n정답: [정답 알파벳]'";
+        const response = await openai.chat.completions.create({
+            messages: [{ role: "system", content: systemContent }],
+            model: "gpt-3.5-turbo"
+        });
+
+        console.log('GPT response:', response);
+
+        const content = response.choices[0].message.content;
+        console.log('Raw content:', content);
+
+        const parsedContent = parseQuestion(content);
+        console.log('Parsed content:', parsedContent);
+
+        res.json(parsedContent);
+    } catch (error) {
+        console.error('Error in /tech/question:', error);
+        res.status(500).json({ error: error.message || 'Internal Server Error' });
+    }
+});
+
+//정보처리기사 문제생성
+app.get('/eng/question', async (req, res) => {
+    try {
+        console.log('Generating question...');
+        const systemContent = "당신은 정보처리기사 시험 문제를 출제하는 출제자입니다. 객관식 문제 하나와 4개의 선택지, 그리고 정답을 생성해주세요. 형식: '문제: [문제 내용]\na) [선택지1]\nb) [선택지2]\nc) [선택지3]\nd) [선택지4]\n정답: [정답 알파벳]'";
+        const response = await openai.chat.completions.create({
+            messages: [{ role: "system", content: systemContent }],
+            model: "gpt-3.5-turbo"
+        });
+
+        console.log('GPT response:', response);
+
+        const content = response.choices[0].message.content;
+        console.log('Raw content:', content);
+
+        const parsedContent = parseQuestion(content);
+        console.log('Parsed content:', parsedContent);
+
+        res.json(parsedContent);
+    } catch (error) {
+        console.error('Error in /tech/question:', error);
+        res.status(500).json({ error: error.message || 'Internal Server Error' });
+    }
+});
+
+function parseQuestion(content) {
+    const lines = content.split('\n');
+    const question = lines[0].replace('문제: ', '');
+    const options = lines.slice(1, 5).map(line => line.replace(/^[a-d]\) /, ''));
+    const correctAnswer = lines[5].replace('정답: ', '').charCodeAt(0) - 97;
+
+    return { question, options, correctAnswer };
+}
+
 // 정보처리산업기사
 app.post('/ieng', async (req, res, next) => {
     try {
