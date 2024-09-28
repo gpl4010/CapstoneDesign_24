@@ -1,0 +1,33 @@
+services:
+  web:
+    build: .
+    ports:
+      - "80:8082"
+    # depends_on:
+    #   - db
+    # environment:
+    #   - DB_HOST=db
+    #   - DB_USER=root
+    #   - DB_PASSWORD=example
+    #   - DB_NAME=mydatabase
+    volumes:
+      - .:/usr/src/app
+    networks:
+      - mynetwork
+
+  # db:
+  #   image: mysql:5.7
+  #   restart: always
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: example
+  #     MYSQL_DATABASE: mydatabase
+  #   volumes:
+  #     - db-data:/var/lib/mysql
+  #   networks:
+  #     - mynetwork
+
+volumes:
+  db-data:
+
+networks:
+  mynetwork:
