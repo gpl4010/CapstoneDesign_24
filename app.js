@@ -173,25 +173,82 @@ app.post('/chat', async (req, res, next) => {
     }
 });
 
-// GET 라우트
-const htmlRoutes = [
-    '/', '/index', '/login', '/forgotpassword', '/contact', '/blank',
-    '/InfoTechWrLearn', '/InfoTechPrLearn', '/InfoTechWrTest', '/InfoTechPrTest',
-    '/InfoIEngineerWrLearn', '/InfoIEngineerPrLearn', '/InfoIEngineerWrTest', '/InfoIEngineerPrTest',
-    '/InfoEngineerWrLearn', '/InfoEngineerPrLearn', '/InfoEngineerWrTest', '/InfoEngineerPrTest'
-];
-
-htmlRoutes.forEach(route => {
-    app.get(route, (req, res) => {
-        const fileName = route === '/' ? 'index.html' : `${route.slice(1)}.html`;
-        res.sendFile(path.join(__dirname, "html", fileName));
-    });
+//get 명령어
+//누군가가 '/' 주소를 요청하면 /.html 화면을 띄워주자
+app.get('/',function(req, res){
+    res.sendFile(path.join(__dirname,"html",'index.html'))
 });
 
-// 404 처리
-app.use('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'html', '404.html'));
+app.get('/index',function(req, res){
+    res.sendFile(path.join(__dirname,"html",'index.html'))
 });
+app.get('/login',function(req, res){
+    res.sendFile(path.join(__dirname,"html",'login.html'))
+});
+
+app.get('/forgotpassword',function(req, res){
+    res.sendFile(path.join(__dirname,"html",'forgot-password.html'))
+});
+
+app.get('/contact',function(req, res){
+    res.sendFile(path.join(__dirname,"html",'Contact.html'))
+});
+
+app.get('/blank',function(req, res){
+    res.sendFile(path.join(__dirname,"html",'blank.html'))
+});
+
+app.get('/InfoTechWrLearn',function(req, res){
+    res.sendFile(path.join(__dirname,"html",'InfoTechWrLearn.html'))
+});
+
+app.get('/InfoTechPrLearn',function(req, res){
+    res.sendFile(path.join(__dirname,"html",'InfoTechPrLearn.html'))
+});
+
+app.get('/InfoTechWrTest',function(req, res){
+    res.sendFile(path.join(__dirname,"html",'InfoTechWrTest.html'))
+});
+
+app.get('/InfoTechPrTest',function(req, res){
+    res.sendFile(path.join(__dirname,"html",'InfoTechPrTest.html'))
+});
+
+app.get('/InfoIEngineerWrLearn',function(req, res){
+    res.sendFile(path.join(__dirname,"html",'InfoIEngineerWrLearn.html'))
+});
+
+app.get('/InfoIEngineerPrLearn',function(req, res){
+    res.sendFile(path.join(__dirname,"html",'InfoIEngineerPrLearn.html'))
+});
+
+app.get('/InfoIEngineerWrTest',function(req, res){
+    res.sendFile(path.join(__dirname,"html",'InfoIEngineerWrTest.html'))
+});
+
+app.get('/InfoIEngineerPrTest',function(req, res){
+    res.sendFile(path.join(__dirname,"html",'InfoIEngineerPrTest.html'))
+});
+
+app.get('/InfoEngineerWrLearn',function(req, res){
+    res.sendFile(path.join(__dirname,"html",'InfoEngineerWrLearn.html'))
+});
+
+app.get('/InfoEngineerPrLearn',function(req, res){
+    res.sendFile(path.join(__dirname,"html",'InfoEngineerPrLearn.html'))
+});
+
+app.get('/InfoEngineerWrTest',function(req, res){
+    res.sendFile(path.join(__dirname,"html",'InfoEngineerWrTest.html'))
+});
+
+app.get('/InfoEngineerPrTest',function(req, res){
+    res.sendFile(path.join(__dirname,"html",'InfoEngineerPrTest.html'))
+});
+
+app.use('*',(req, res) => {
+    res.sendFile(path.join(__dirname,'html','404.html'));
+  });
 
 // 서버 시작
 const PORT = process.env.PORT || 8082;
