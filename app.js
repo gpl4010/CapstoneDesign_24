@@ -18,6 +18,12 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "html")));
+app.use(express.static(path.join(__dirname, "html","css")));
+app.use(express.static(path.join(__dirname, "html","vendor")));
+app.use(express.static(path.join(__dirname, "html","img")));
+app.use(express.static(path.join(__dirname, "html","js")));
+app.use(express.static(path.join(__dirname, "html","scss")));
+
 app.use(cors());
 app.use(helmet());
 
