@@ -195,6 +195,6 @@ app.use('*', (req, res) => {
 
 // 서버 시작
 const PORT = process.env.PORT || 8082;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running on port ${PORT}`);
 });
